@@ -1,3 +1,4 @@
+#This files adds all history population per year only once in database
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -5,13 +6,14 @@ import pymongo
 from pymongo import MongoClient
 from datetime import datetime
 
+#getting html
 url="https://countrymeters.info/en/World"
 page=requests.get(url)
 if page.status_code==200:
     html=page.content
     soup = BeautifulSoup(html, 'html.parser')
 
-cluster=MongoClient("<URL>")
+cluster=MongoClient("<URL>") #required mongodb url to enter data
 db=cluster['World_population']
 
 
@@ -21,6 +23,7 @@ if len(table_divs)>=2:
 else:
     table=table_divs[0]
 headers=[]
+#getting headers
 for i in table.find_all('th'):
     title=i.text
     headers.append(title)
